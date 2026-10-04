@@ -1,42 +1,84 @@
 #!/bin/bash
 
-read -rp "Enter the files u want to sort: " file_type
+pics=("jpg" "png" "jpeg" "svg" "webp" "gif")
+vids=("mp4" "mkv" "mov")
+text=("txt" "csv" "json")
+codes=("py" "c" "cpp" "html" "js" "css" "java" "sh")
+audio=("mp3" "wav" "m4a")
+declare -A dic=([images]="${pics[@]}" [videos]="${vids[@]}" [texts]="${text[@]}" [program]="${codes[@]}" [audio]="${audio[@]}")
+keys=("${!dic[@]}")
+
+#function to give extensions -----
+extentions () {
+for i in "${!dic[@]}"; do 
+	if [[ "$i" == "$user_selection" ]];then
+		reverted=(${dic[$i]})
+		read -ra extends <<< "${reverted[@]}"
+		for j in "${extends[@]}";do
+			echo "$j"
+		done
+		return 0
+	fi
+done
+} 
+
+
+echo "Your options are   ${!dic[@]}"
+
+read -rp "Enter the files u want to sort: " user
+user_selection="${keys[$user]}"
+echo "you have selected $user_selection "
+
+#---greeting the extensions---
+mapfile -t ans < <(extentions)
+#for k in "${ans[@]}";do
+#	echo "$k"
+#done
 
 cd ~ 
 all_folders=($(ls))
-#mkdir -p  sorted_folder/$file_type
+mkdir -p  sorted_folder/$user_selection
 
-
+pattern=$(IFS="|"; echo "${ans[*]}")
 for i in ${all_folders[@]} ; do
-
-
-#if [ $i == "Pictures" ]; then    ----first version
-#echo "passed the og folder"
-#continue
-#fi
-
-echo "--- searching in the folder $i ---"
-
-cd $i
-in_fold=($(ls -p | grep -v /))
-for j in ${in_fold[@]}; do
-
-if [[ $j == *.jpg ]]; then
-echo "a file found"
-echo "------- the file is $j ------------"
-mv $j ~/Pictures/images
-echo "file moved"
-fi
-done
+	if [[ "$i" == "sorted_folder" ]];then
+		echo "og folder skipped"
+		continue
+	fi
+	echo "--- searching in the folder $i ---"
+	cd $i
+	in_fold=($(ls -p | grep -v /))
+		for j in ${in_fold[@]}; do
+			if [[ "$j" =~ \.($pattern)$ ]]; then
+				echo "a file found"
+				echo "------- the file is $j ------------"
+				mv $j ~/sorted_folder/$user_selection
+				echo "file moved"
+			fi
+		done
 cd ~
-
 done
 
+#-------------------------------------------------------------------------
+#for i in "${!dic[@]}"; do 
+#	if [[ "$i" == "$user_selection" ]];then
+#		reverted=(${dic[$i]})	
+#		for j in "${reverted[@]}";do
+#			echo "$j"
+#		done
+#	fi
+#done
+
+#----------------------------------------------------------------------------------------
+
+
+# 2. Check the condition in a single 'if' statement
 
 
 
 
-
+#-------------------
+#if [[ " ${my_list[*]} " =~ " $search_item " ]]; then
 
 
 
