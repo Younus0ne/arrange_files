@@ -24,6 +24,7 @@ done
 
 
 echo "Your options are   ${!dic[@]}"
+echo "Select the option based on the index. (starts from the 0) "
 
 read -rp "Enter the files u want to sort: " user
 user_selection="${keys[$user]}"
