@@ -32,9 +32,6 @@ echo "you have selected $user_selection "
 
 #---greeting the extensions---
 mapfile -t ans < <(extentions)
-#for k in "${ans[@]}";do
-#	echo "$k"
-#done
 
 cd ~ 
 all_folders=($(ls))
@@ -59,31 +56,3 @@ for i in ${all_folders[@]} ; do
 		done
 cd ~
 done
-
-#-------------------------------------------------------------------------
-#for i in "${!dic[@]}"; do 
-#	if [[ "$i" == "$user_selection" ]];then
-#		reverted=(${dic[$i]})	
-#		for j in "${reverted[@]}";do
-#			echo "$j"
-#		done
-#	fi
-#done
-
-#----------------------------------------------------------------------------------------
-
-
-# 2. Check the condition in a single 'if' statement
-
-
-
-
-#-------------------
-#if [[ " ${my_list[*]} " =~ " $search_item " ]]; then
-
-
-
-
-
-
-
