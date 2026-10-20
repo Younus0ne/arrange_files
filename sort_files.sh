@@ -39,12 +39,16 @@ mkdir -p  sorted_folder/$user_selection
 
 pattern=$(IFS="|"; echo "${ans[*]}")
 for i in ${all_folders[@]} ; do
+	
 	if [[ "$i" == "sorted_folder" ]];then
-		echo "og folder skipped"
+		echo "OG folder skipped"
 		continue
 	fi
 	echo "--- searching in the folder $i ---"
 	cd $i
+	#----------------
+	sub_folders=($(ls -p | grep /))	
+	#------------------
 	in_fold=($(ls -p | grep -v /))
 		for j in ${in_fold[@]}; do
 			if [[ "$j" =~ \.($pattern)$ ]]; then
@@ -54,5 +58,32 @@ for i in ${all_folders[@]} ; do
 				echo "file moved"
 			fi
 		done
+		
+	#--------------------------
+	for k in ${sub_folders[@]}; do
+		cd $k
+		echo "--- searching in the sub folder $k ---"
+		in_sub_fold=($(ls -p | grep -v /))
+		for l in ${in_sub_fold[@]}; do                                 
+			if [[ "$l" =~ \.($pattern)$ ]]; then
+				echo "a file found"
+				echo "------- the file is $l ------------"
+				mv $l ~/sorted_folder/$user_selection
+				echo "file moved"
+			fi
+		done
+		cd ..
+	done
+	#-------------------------	
 cd ~
 done
+echo "~~~~~ All selected files moved successfully ~~~~~"
+
+
+
+
+
+
+
+
+
